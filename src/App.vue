@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import PubSub from "pubsub-js";
 import TodoHeader from "./components/TodoHeader";
 import TodoList from "./components/TodoList";
 import TodoFooter from "./components/TodoFooter";
@@ -24,15 +25,23 @@ export default {
       this.todos.unshift(todoObj)
     },
     // 勾選or取消勾選一個todo
-    checkTodo (id) {
+    checkTodo (_, id) {
       this.todos.forEach((item) => {
         if (item.id === id) {
           item.isDone = !item.isDone;
         }
       });
     },
+    // 編輯todo名稱
+    editTodoName(id, title){
+      this.todos.forEach((item) => {
+        if(item.id === id){
+          item.title = title
+        }
+      })
+    },
     // 刪除一個todo
-    deleteTodo (id) {
+    deleteTodo (_, id) {
       this.todos = this.todos.filter((todo) => todo.id !== id);
     },
     // 刪除已完成的todo
@@ -60,14 +69,14 @@ export default {
     }
   },
   mounted(){
-    // 給總線綁定自定義事件
-    this.$bus.$on('checkTodo', this.checkTodo)
-    this.$bus.$on('deleteTodo', this.deleteTodo)
+    this.pid1 = PubSub.subscribe('checkTodo', this.checkTodo)
+    this.pid2 = PubSub.subscribe('deleteTodo', this.deleteTodo)
+    this.$bus.$on('editTodoName', this.editTodoName)
   },
   beforeDestroy(){
-    // 組件卸載前解除總線綁定的自定義事件
-    this.$bus.$off('checkTodo')
-    this.$bus.$off('deleteTodo')
+    PubSub.unsubscribe(this.pid1)
+    PubSub.unsubscribe(this.pid2)
+    this.$bus.$off('editTodoName')
   }
 };
 </script>
