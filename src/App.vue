@@ -48,12 +48,16 @@ export default {
   },
   data() {
     return {
-      todos: [
-        { id: "001", title: "吃飯", isDone: true },
-        { id: "002", title: "睡覺", isDone: false },
-        { id: "003", title: "打豆豆", isDone: true },
-      ],
+      todos:JSON.parse(localStorage.getItem('todos')) || []
     };
+  },
+  watch: {
+    todos:{
+      handler(){
+        localStorage.setItem('todos', JSON.stringify(this.todos))
+      },
+      deep: true
+    }
   },
 };
 </script>
