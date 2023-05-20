@@ -18,7 +18,6 @@ export default {
       title: "",
     };
   },
-  props: ["addTodo"],
   methods: {
     add() {
       // 校驗數據的合法性
@@ -26,7 +25,7 @@ export default {
       // 將用戶的輸入包裝成一個todo對象
       const todoObj = {id: nanoid(), title: this.title, isDone: false,};
       // 通知App將todoObj這個對象追加到todos中
-      this.addTodo(todoObj)
+      this.$emit("addTodo", todoObj);
       // 清空輸入
       this.title = ''
     },

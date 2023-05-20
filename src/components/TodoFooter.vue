@@ -11,12 +11,12 @@
 <script>
   export default {
     name: "TodoFooter",
-    props: ['deleteDoneTodo', 'todos', 'selectAllTodo'],
+    props: ['todos'],
     methods: {
       delDoneTodo(){
         // 通知App組件刪除所有任務
         if(confirm('確定刪除已完成的任務嗎？')){
-          this.deleteDoneTodo ()
+          this.$emit('deleteDoneTodo')
         }
       },
       // selAllTodo(){
@@ -44,7 +44,7 @@
         },
         set(value){
           // 通知App組件全選/全不選
-          this.selectAllTodo(value)
+          this.$emit('selectAllTodo',value)
         }
       }
     }

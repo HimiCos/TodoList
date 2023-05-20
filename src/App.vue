@@ -1,8 +1,8 @@
 <template>
   <div id="todoBody">
-    <TodoHeader :addTodo="addTodo"/>
-    <TodoList :todos="todos" :checkTodo="checkTodo" :deleteTodo="deleteTodo"/>
-    <TodoFooter :deleteDoneTodo="deleteDoneTodo" :todos="todos" :selectAllTodo="selectAllTodo"/>
+    <TodoHeader @addTodo="addTodo"/>
+    <TodoList :todos="todos"/>
+    <TodoFooter :todos="todos" @deleteDoneTodo="deleteDoneTodo" @selectAllTodo="selectAllTodo"/>
   </div>
 </template>
 
@@ -59,6 +59,16 @@ export default {
       deep: true
     }
   },
+  mounted(){
+    // 給總線綁定自定義事件
+    this.$bus.$on('checkTodo', this.checkTodo)
+    this.$bus.$on('deleteTodo', this.deleteTodo)
+  },
+  beforeDestroy(){
+    // 組件卸載前解除總線綁定的自定義事件
+    this.$bus.$off('checkTodo')
+    this.$bus.$off('deleteTodo')
+  }
 };
 </script>
 <style>

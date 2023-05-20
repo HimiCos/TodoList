@@ -17,16 +17,16 @@
 <script>
   export default {
     name: "TodoItem",
-    props: ['todos', 'checkTodo', 'deleteTodo'],
+    props: ['todos'],
     methods: {
       handleCheck(id) {
         // 通知App組件將當前任務的狀態改變
-        this.checkTodo (id)
+        this.$bus.$emit('checkTodo',id)
       },
       delTodo(id){
         // 通知App組件刪除當前任務
         if(confirm('確定刪除當前任務嗎？')){
-          this.deleteTodo (id)
+          this.$bus.$emit('deleteTodo',id)
         }
       }
     }
